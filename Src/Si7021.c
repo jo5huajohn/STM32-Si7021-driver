@@ -11,7 +11,7 @@ uint8_t cmd[2] = { };
 uint8_t buff[2] = { };
 HAL_StatusTypeDef si7021_status = HAL_OK;
 
-float Si7021_Read_Rel_Humidity(I2C_HandleTypeDef *hi2c, measurementmode_t measurement_mode)
+float Si7021_Read_Rel_Humidity(I2C_HandleTypeDef *hi2c, measurement_mode_t measurement_mode)
 {
     static float rh_code = 0.0;
 
@@ -39,7 +39,7 @@ float Si7021_Read_Rel_Humidity(I2C_HandleTypeDef *hi2c, measurementmode_t measur
         return rh_code;
 }
 
-float Si7021_Read_Temp_C(I2C_HandleTypeDef *hi2c, measurementmode_t measurement_mode)
+float Si7021_Read_Temp_C(I2C_HandleTypeDef *hi2c, measurement_mode_t measurement_mode)
 {
     static float temp_code = 0.0;
 
@@ -164,7 +164,7 @@ resolution_t Si7021_Read_RH_Temp_Resolution(I2C_HandleTypeDef *hi2c)
     return resolution;
 }
 
-vddstatus_t Si7021_Read_Vdd_Status(I2C_HandleTypeDef *hi2c)
+vdd_status_t Si7021_Read_Vdd_Status(I2C_HandleTypeDef *hi2c)
 {
     cmd[0] = SI7021_CMD_READ_USR_REG_1;
     HAL_I2C_Master_Transmit(hi2c, SI7021_I2C_SLAVE_ADDR, &cmd[0], 1, 100);
@@ -183,7 +183,7 @@ heater_t Si7021_Read_Heater_Status(I2C_HandleTypeDef *hi2c)
     return SI7021_USR_REG_1_D2 == (buff[0] & SI7021_USR_REG_1_D2) ? HEATER_ENABLE : HEATER_DISABLE;
 }
 
-HAL_StatusTypeDef Si7021_Write_Heater_Current(I2C_HandleTypeDef *hi2c, heatercurrent_t current)
+HAL_StatusTypeDef Si7021_Write_Heater_Current(I2C_HandleTypeDef *hi2c, heater_current_t current)
 {
     cmd[0] = SI7021_CMD_READ_HTR_CTRL_REG;
 
@@ -224,9 +224,9 @@ HAL_StatusTypeDef Si7021_Write_Heater_Current(I2C_HandleTypeDef *hi2c, heatercur
     return si7021_status;
 }
 
-heatercurrent_t Si7021_Read_Heater_Current(I2C_HandleTypeDef *hi2c)
+heater_current_t Si7021_Read_Heater_Current(I2C_HandleTypeDef *hi2c)
 {
-    heatercurrent_t current;
+    heater_current_t current;
     cmd[0] = SI7021_CMD_READ_HTR_CTRL_REG;
 
     HAL_I2C_Master_Transmit(hi2c, SI7021_I2C_SLAVE_ADDR, &cmd[0], 1, 100);
